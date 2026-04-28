@@ -1,5 +1,6 @@
 package com.example.fishbook
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -26,10 +27,16 @@ class AuthActivity : AppCompatActivity() {
             }
 
             if (username == password) {
+                // Simpan status login ke SharedPreferences
+                val sharedPref = getSharedPreferences("BinaDesaPref", Context.MODE_PRIVATE)
+                with(sharedPref.edit()) {
+                    putBoolean("isLogin", true)
+                    putString("USER_NAME", username)
+                    apply()
+                }
+
                 Toast.makeText(this, "Login Berhasil!", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, MainActivity::class.java)
-                // Kirim data username ke MainActivity
-                intent.putExtra("USER_NAME", username)
                 startActivity(intent)
                 finish()
             } else {
