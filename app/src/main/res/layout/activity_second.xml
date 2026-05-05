@@ -14,7 +14,7 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginTop="20dp"
-        android:src="@android:drawable/btn_star_big_on"
+        android:src="@drawable/ic_launcher_foreground"
         android:tint="#FF8FC1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/textNama"
