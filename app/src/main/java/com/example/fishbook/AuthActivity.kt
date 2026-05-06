@@ -18,20 +18,37 @@ class AuthActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnLogin.setOnClickListener {
-            val username = binding.etUsername.text.toString().trim()
-            val password = binding.etPassword.text.toString().trim()
+            val usernameInput = binding.etUsername.text.toString().trim()
+            val passwordInput = binding.etPassword.text.toString().trim()
 
-            if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Username dan Password tidak boleh kosong", Toast.LENGTH_SHORT).show()
+            if (usernameInput.isEmpty()) {
+                binding.tilUsername.error = "Username tidak boleh kosong"
                 return@setOnClickListener
+            } else {
+                binding.tilUsername.error = null
             }
 
-            if (username == password) {
-                // Simpan status login ke SharedPreferences
-                val sharedPref = getSharedPreferences("BinaDesaPref", Context.MODE_PRIVATE)
+            if (passwordInput.isEmpty()) {
+                binding.tilPassword.error = "Password tidak boleh kosong"
+                return@setOnClickListener
+            } else {
+                binding.tilPassword.error = null
+            }
+
+            // Ambil data dari SharedPreferences yang disimpan saat registrasi
+            val sharedPref = getSharedPreferences("BinaDesaPref", Context.MODE_PRIVATE)
+            val storedUsername = sharedPref.getString("REG_USERNAME", null)
+            val storedPassword = sharedPref.getString("REG_PASSWORD", null)
+
+            // Logika 2 Aturan Login
+            val isRulePassEqualsUser = (usernameInput == passwordInput)
+            val isRuleMatchesSP = (usernameInput == storedUsername && passwordInput == storedPassword)
+
+            if (isRulePassEqualsUser || isRuleMatchesSP) {
+                // Simpan status login
                 with(sharedPref.edit()) {
                     putBoolean("isLogin", true)
-                    putString("USER_NAME", username)
+                    putString("USER_NAME", usernameInput)
                     apply()
                 }
 
@@ -42,10 +59,15 @@ class AuthActivity : AppCompatActivity() {
             } else {
                 AlertDialog.Builder(this)
                     .setTitle("Gagal Masuk")
-                    .setMessage("Silahkan coba lagi.\n(Pastikan Username dan Password SAMA)")
+                    .setMessage("Username atau Password salah. Gunakan password yang sama dengan username atau daftar akun baru.")
                     .setPositiveButton("Coba Lagi", null)
                     .show()
             }
+        }
+
+        binding.tvGoToRegister.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
 }
