@@ -26,7 +26,8 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             val fragment: Fragment = when (item.itemId) {
                 R.id.navigation_home -> HomeFragment()
-                R.id.navigation_about -> AboutFragment()
+                R.id.navigation_reports -> ReportsFragment()
+                R.id.navigation_settings -> SettingsFragment()
                 R.id.navigation_profile -> ProfileFragment()
                 else -> HomeFragment()
             }
